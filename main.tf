@@ -51,6 +51,12 @@ locals {
 # Map Resource Groups to Alert Channels and Rules
 # https://registry.terraform.io/providers/lacework/lacework/latest/docs/resources/resource_group_gcp
 #####################################################################
+resource "lacework_resource_group_aws" "lacework_aws_rg" {
+  count        = var.bu_count
+  name         = "bu_${count.index}"
+  description  = var.list_config[count.index].bu_resource_group_name
+  accounts     = var.list_config[count.index].resource_group_accounts 
+}
 
 resource "lacework_resource_group_aws" "business_unit_1" {
   name         = "business_unit_1 AWS Accounts"
@@ -73,6 +79,7 @@ resource "lacework_resource_group_aws" "business_unit_2" {
 # Logic:
 # (All Accounts) - bu1 - bu2 - ... n == All Unclassified Projects
 resource "lacework_resource_group_aws" "AllOtherUnclassifiedAccounts" {
+  count        = try(length(data.aws_organizations_organization.org1.accounts),0)
   name         = "AWS - All Unclassified Accounts"
   description  = "All accounts not otherwise specified"
   # there has to be a cleaner way to do this....best I can do for the moment
@@ -148,19 +155,19 @@ resource "lacework_alert_rule" "route_behavior_crit_high_servicenow" {
   resource_groups  = ["All AWS Accounts"]
 }
 
-resource "lacework_alert_rule" "route_compliance_jira" {
+resource "lacework_alert_rule" "route_compliance_jira1" {
   name             = "Compliance to Group 1 Jira"
   description      = "Compliance to Group 1 Jira"
-  channels         = [lacework_alert_channel_jira.customer_jira1.id]
+  channels         = [lacework_alert_channel_jira_server.customer_jira1.id]
   severities       = ["Critical", "High"]
   event_categories = ["Compliance"]
   resource_groups  = ["group_1_jira"]
 }
 
-resource "lacework_alert_rule" "route_compliance_jira" {
+resource "lacework_alert_rule" "route_compliance_jira2" {
   name             = "Compliance to Group 2 Jira"
   description      = "Compliance to Group 2 Jira"
-  channels         = [lacework_alert_channel_jira.customer_jira2.id]
+  channels         = [lacework_alert_channel_jira_server.customer_jira2.id]
   severities       = ["Critical", "High"]
   event_categories = ["Compliance"]
   resource_groups  = ["group_2_jira"]

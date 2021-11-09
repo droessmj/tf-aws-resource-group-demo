@@ -1,3 +1,35 @@
+/*
+________ALERT RULES________
+  name             = "Compliance to Group 1 Jira"
+  description      = "Compliance to Group 1 Jira"
+  channels         = [lacework_alert_channel_jira.customer_jira1.id]
+  severities       = ["Critical", "High"]
+  event_categories = ["Compliance"]
+  resource_groups  = ["group_1_jira"]
+*/
+variable "bu_count"{
+  type = number
+  default = 2
+}
+
+variable "list_config" {
+  type = any
+  default = [
+    {
+      compliance_alert_channel = "jira_channel_1"
+      anomaly_alert_channel = "servicenow_channel_1"
+      bu_resource_group_name = "bu_1"
+      resource_group_accounts = [092184108996, 081556044659, 865876543607]
+    }, 
+    {
+      compliance_alert_channel = "jira_channel_2"
+      anomaly_alert_channel = "servicenow_channel_1"
+      bu_resource_group_name = "bu_2"
+      resource_group_accounts = [912786606823]
+    }
+  ]
+}
+
 variable "organization_map" {
   type = map
   default = {
@@ -22,21 +54,5 @@ variable "organization_map" {
         698827576654
       ]
     }
-  }
-}
-
-variable "business_unit_1" {
-  type = map
-  default = {
-    target_ou = "ou-vrbz-sb5wzrsg",
-    preferred_alert_channel = ""
-  }
-}
-
-variable "business_unit_2" {
-  type = map
-  default = {
-    target_ou = "ou-vrbz-ugxa0808",
-    preferred_alert_channel = ""
   }
 }
