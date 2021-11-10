@@ -58,6 +58,12 @@ resource "lacework_resource_group_aws" "lacework_aws_rg" {
   accounts     = var.list_config[count.index].resource_group_accounts 
 }
 
+resource "lacework_resource_group_aws" "all_aws_projects" {
+  name         = "AWS Resource Group"
+  description  = "All AWS Projects"
+  accounts     = ["*"]
+}
+
 resource "lacework_resource_group_aws" "business_unit_1" {
   name         = "business_unit_1 AWS Accounts"
   description  = "business_unit_1 AWS Accounts"
@@ -94,6 +100,8 @@ resource "lacework_resource_group_aws" "AllOtherUnclassifiedAccounts" {
 #####################################################################
 
 #https://registry.terraform.io/providers/lacework/lacework/latest/docs/resources/alert_channel_service_now
+
+/*
 resource "lacework_alert_channel_service_now" "customer_servicenow" {
   name         = "Service Now Alerts"
   instance_url = "snow-lacework.com"
@@ -118,6 +126,7 @@ resource "lacework_alert_channel_jira_server" "customer_jira2" {
   username    = "lacework-for-jira"
   password    = "TBD..source from outside this file!"
 }
+*/
 
 resource "lacework_alert_channel_email" "notify_someone_over_email" {
   name       = "Notify Someone Over Email"
@@ -149,26 +158,26 @@ enabled - (Optional) The state of the external integration. Defaults to true.
 resource "lacework_alert_rule" "route_behavior_crit_high_servicenow" {
   name             = "Cloud Critical, High to ServiceNow"
   description      = "Cloud Critical, High to ServiceNow"
-  channels         = [lacework_alert_channel_service_now.customer_servicenow.id]
+  channels         = [lacework_alert_channel_email.notify_someone_over_email.id]
   severities       = ["Critical", "High"]
   event_categories = ["Cloud"]
-  resource_groups  = ["All AWS Accounts"]
+  resource_groups  = [lacework_resource_group_aws.all_aws_projects.id]
 }
 
 resource "lacework_alert_rule" "route_compliance_jira1" {
   name             = "Compliance to Group 1 Jira"
   description      = "Compliance to Group 1 Jira"
-  channels         = [lacework_alert_channel_jira_server.customer_jira1.id]
+  channels         = [lacework_alert_channel_email.notify_someone_over_email.id]
   severities       = ["Critical", "High"]
   event_categories = ["Compliance"]
-  resource_groups  = ["group_1_jira"]
+  resource_groups  = [lacework_resource_group_aws.lacework_aws_rg[0].id]
 }
 
 resource "lacework_alert_rule" "route_compliance_jira2" {
   name             = "Compliance to Group 2 Jira"
   description      = "Compliance to Group 2 Jira"
-  channels         = [lacework_alert_channel_jira_server.customer_jira2.id]
+  channels         = [lacework_alert_channel_email.notify_someone_over_email.id]
   severities       = ["Critical", "High"]
   event_categories = ["Compliance"]
-  resource_groups  = ["group_2_jira"]
+  resource_groups  = [lacework_resource_group_aws.lacework_aws_rg[1].id]
 }

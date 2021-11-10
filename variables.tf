@@ -18,13 +18,13 @@ variable "list_config" {
     {
       compliance_alert_channel = "jira_channel_1"
       anomaly_alert_channel = "servicenow_channel_1"
-      bu_resource_group_name = "bu_1"
+      bu_resource_group_name = "bu_0"
       resource_group_accounts = [092184108996, 081556044659, 865876543607]
     }, 
     {
       compliance_alert_channel = "jira_channel_2"
       anomaly_alert_channel = "servicenow_channel_1"
-      bu_resource_group_name = "bu_2"
+      bu_resource_group_name = "bu_1"
       resource_group_accounts = [912786606823]
     }
   ]
