@@ -59,8 +59,8 @@ resource "lacework_resource_group_aws" "lacework_aws_rg" {
 }
 
 resource "lacework_resource_group_aws" "all_aws_projects" {
-  name         = "AWS Resource Group"
-  description  = "All AWS Projects"
+  name         = "Custom - AWS Resource Group"
+  description  = "Custom - All AWS Accounts"
   accounts     = ["*"]
 }
 
@@ -131,7 +131,7 @@ resource "lacework_alert_channel_jira_server" "customer_jira2" {
 resource "lacework_alert_channel_email" "notify_someone_over_email" {
   name       = "Notify Someone Over Email"
   recipients = [
-    "michael.droessler@lacework.net"
+    "email@domain.com"
   ]
 }
 
