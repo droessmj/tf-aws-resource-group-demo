@@ -155,6 +155,7 @@ resource_groups - (Optional) The list of resource groups the rule will apply to.
 enabled - (Optional) The state of the external integration. Defaults to true.
 */
 
+#NOTE - channels will become alert_channels in lw provider 0.12.2...
 resource "lacework_alert_rule" "route_behavior_crit_high_servicenow" {
   name             = "Cloud Critical, High to ServiceNow"
   description      = "Cloud Critical, High to ServiceNow"
@@ -164,6 +165,7 @@ resource "lacework_alert_rule" "route_behavior_crit_high_servicenow" {
   resource_groups  = [lacework_resource_group_aws.all_aws_projects.id]
 }
 
+#NOTE - channels will become alert_channels in lw provider 0.12.2...
 resource "lacework_alert_rule" "route_compliance_jira1" {
   name             = "Compliance to Group 1 Jira"
   description      = "Compliance to Group 1 Jira"
@@ -173,6 +175,7 @@ resource "lacework_alert_rule" "route_compliance_jira1" {
   resource_groups  = [lacework_resource_group_aws.lacework_aws_rg[0].id]
 }
 
+#NOTE - channels will become alert_channels in lw provider 0.12.2...
 resource "lacework_alert_rule" "route_compliance_jira2" {
   name             = "Compliance to Group 2 Jira"
   description      = "Compliance to Group 2 Jira"
