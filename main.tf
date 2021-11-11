@@ -136,7 +136,7 @@ resource "lacework_alert_channel_slack" "ops_critical" {
 resource "lacework_alert_channel_email" "notify_someone_over_email" {
   name       = "Notify Someone Over Email"
   recipients = [
-    "michael.droessler@lacework.net"
+    "test@domain.com"
   ]
 }
 
