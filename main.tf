@@ -126,12 +126,17 @@ resource "lacework_alert_channel_jira_server" "customer_jira2" {
   username    = "lacework-for-jira"
   password    = "TBD..source from outside this file!"
 }
+
+resource "lacework_alert_channel_slack" "ops_critical" {
+  name      = "OPS Critical Alerts"
+  slack_url = "https://hooks.slack.com/services/ABCD/12345/abcd1234"
+}
 */
 
 resource "lacework_alert_channel_email" "notify_someone_over_email" {
   name       = "Notify Someone Over Email"
   recipients = [
-    "email@domain.com"
+    "michael.droessler@lacework.net"
   ]
 }
 
@@ -155,31 +160,28 @@ resource_groups - (Optional) The list of resource groups the rule will apply to.
 enabled - (Optional) The state of the external integration. Defaults to true.
 */
 
-#NOTE - channels will become alert_channels in lw provider 0.12.2...
 resource "lacework_alert_rule" "route_behavior_crit_high_servicenow" {
   name             = "Cloud Critical, High to ServiceNow"
   description      = "Cloud Critical, High to ServiceNow"
-  channels         = [lacework_alert_channel_email.notify_someone_over_email.id]
+  alert_channels   = [lacework_alert_channel_email.notify_someone_over_email.id]
   severities       = ["Critical", "High"]
   event_categories = ["Cloud"]
   resource_groups  = [lacework_resource_group_aws.all_aws_projects.id]
 }
 
-#NOTE - channels will become alert_channels in lw provider 0.12.2...
 resource "lacework_alert_rule" "route_compliance_jira1" {
   name             = "Compliance to Group 1 Jira"
   description      = "Compliance to Group 1 Jira"
-  channels         = [lacework_alert_channel_email.notify_someone_over_email.id]
+  alert_channels   = [lacework_alert_channel_email.notify_someone_over_email.id]
   severities       = ["Critical", "High"]
   event_categories = ["Compliance"]
   resource_groups  = [lacework_resource_group_aws.lacework_aws_rg[0].id]
 }
 
-#NOTE - channels will become alert_channels in lw provider 0.12.2...
 resource "lacework_alert_rule" "route_compliance_jira2" {
   name             = "Compliance to Group 2 Jira"
   description      = "Compliance to Group 2 Jira"
-  channels         = [lacework_alert_channel_email.notify_someone_over_email.id]
+  alert_channels   = [lacework_alert_channel_email.notify_someone_over_email.id]
   severities       = ["Critical", "High"]
   event_categories = ["Compliance"]
   resource_groups  = [lacework_resource_group_aws.lacework_aws_rg[1].id]
